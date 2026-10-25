@@ -1,3 +1,8 @@
+#===============================================================
+# 名称：utils/auth.py
+# 作用：验证 Token (已被封装成依赖项，可被多接口复用)
+# 主要依赖：
+#===============================================================
 # 三方库
 from fastapi import Header, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -13,5 +18,5 @@ async def get_current_user(authorization: str = Header(..., alias='Authorization
 
     user = await users.get_user_by_token(db, token)
     if not user:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHDRIZED, detail='无效的令牌或令牌已过期')
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='无效的令牌或令牌已过期')
     return user

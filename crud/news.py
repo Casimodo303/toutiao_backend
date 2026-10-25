@@ -1,3 +1,8 @@
+#===============================================================
+# 名称：crud/news.py
+# 作用：为新闻提供数据库增删改查的方法
+# 主要依赖：models/news
+#===============================================================
 # 三方库
 from sqlalchemy import select, update, func
 from sqlalchemy.ext.asyncio import AsyncSession

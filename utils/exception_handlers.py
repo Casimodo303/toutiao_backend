@@ -1,3 +1,8 @@
+#===============================================================
+# 名称：utils/exception.py
+# 作用：全局异常捕获注册(exception.py的附属文件，负责注册各种异常)
+# 主要依赖：
+#===============================================================
 # 三方库
 from fastapi import HTTPException
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError

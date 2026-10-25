@@ -1,3 +1,8 @@
+#===============================================================
+# 名称：main.py
+# 作用：主模块，FastAPI实例化，对挂载路由注册，注册全局异常，实现跨域链接中间件(Vue)
+# 主要依赖：router/(news, users), utils/exception_handlers
+#===============================================================
 # 三方库
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware

@@ -1,3 +1,8 @@
+#===============================================================
+# 名称：config/db_conf.py
+# 作用：创建数据库会话工厂，实现对数据库的配置
+# 主要依赖：
+#===============================================================
 # 三方库
 from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession, create_async_engine
 

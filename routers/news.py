@@ -1,3 +1,8 @@
+#===============================================================
+# 名称：routers/news.py
+# 作用：为新闻提供后端路由接口
+# 主要依赖：crud/news, config/db_conf
+#===============================================================
 # 三方库
 from fastapi import APIRouter, Depends, Query, HTTPException
 

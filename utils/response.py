@@ -1,3 +1,8 @@
+#===============================================================
+# 名称：utils/exception.py
+# 作用：路由返回体封装(可在router模块被调用，实现返回体的复写)
+# 主要依赖：
+#===============================================================
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 

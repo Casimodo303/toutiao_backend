@@ -1,3 +1,8 @@
+#===============================================================
+# 名称：crud/users.py
+# 作用：为用户提供数据库增删改查的方法
+# 主要依赖：models/users, schemas/users, utils/seurity
+#===============================================================
 # 官方库
 import uuid
 from datetime import datetime, timedelta
@@ -87,10 +92,19 @@ async def update_user(db: AsyncSession, username: str, user_data: UserUpdateRequ
     update_user = await get_user_by_username(db, username)
     return update_user
 
+# 修改密码
+async def change_password(db: AsyncSession, user: User, old_password: str, new_password: str):
+    if security.verify_password(new_password, user.password):
+        return 1
+    if not security.verify_password(old_password, user.password):
+        return 2
 
-
-
-
+    hash_new_password = security.get_hash_password(new_password)
+    user.password = hash_new_password
+    db.add(user) # 让SQLAlchemy接管user，防止万一会话关闭新密码没有提交上去
+    await db.commit()
+    await db.refresh(user)
+    return 3
 
 
 
