@@ -9,5 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="python_learning" />
     <orderEntry type="module" module-name="jiaotong_backend" />
+    <orderEntry type="module" module-name="python_learning" />
   </component>
 </module>

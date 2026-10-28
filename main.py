@@ -1,14 +1,14 @@
 #===============================================================
 # 名称：main.py
 # 作用：主模块，FastAPI实例化，对挂载路由注册，注册全局异常，实现跨域链接中间件(Vue)
-# 主要依赖：router/(news, users), utils/exception_handlers
+# 主要依赖：router/(news, usersw, favorite), utils/exception_handlers
 #===============================================================
 # 三方库
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 # 本地库
-from routers import news,users
+from routers import news, users, favorite
 from utils.exception_handlers import register_exception_handlers
 
 # FastAPI实例化
@@ -41,3 +41,7 @@ app.include_router(news.router)
 
 # 挂载路由/注册路由
 app.include_router(users.router)
+
+# 挂载路由/注册路由
+app.include_router(favorite.router)
+

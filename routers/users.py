@@ -67,6 +67,7 @@ async def update_user_info(
     update_user = await users.update_user(db, user.username, user_data)
     return success_response(message='更新用户信息成功', data=UserInfoResponse.model_validate(update_user))
 
+# 密码修改路由
 @router.put('/password')
 async def update_password(
         password_data: UserChangePwdRequest,
