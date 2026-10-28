@@ -28,7 +28,7 @@ async def get_categories(skip: int=0,limit: int=100, db = Depends(get_db)):
 @router.get('/list')
 async def get_news(
         category_id: int = Query(..., alias='categoryId'), # 由于前端用的驼峰，所以后端用全小写的时候要添加别名
-        page: int = 1,
+        page: int =  Query(1, ge=1),
         page_size: int = Query(10, le=100,alias='pageSize'),
         db = Depends(get_db)
 ):
@@ -54,6 +54,7 @@ async def read_news_detail(news_id: int = Query(..., alias='id'), db = Depends(g
     if not news_detail: # 新闻可能不存在
         raise HTTPException(status_code=404, detail='新闻不存在')
     news_views = await news.increase_news_views(db, news_id)
+    await db.refresh(news_detail)
     if not news_views:
         raise HTTPException(status_code=404, detail='新闻不存在')
     related_news = await news.get_related_news(db, news_id, news_detail.category_id)

@@ -11,7 +11,7 @@
     />
     
     <div class="history-list" v-if="historyStore.getHistory.length">
-      <div class="history-item" v-for="item in historyStore.getHistory" :key="item.id">
+      <div class="history-item" v-for="item in historyStore.getHistory" :key="item.historyId || item.id">
         <van-cell @click="goToNewsDetail(item.id)" :border="false">
           <template #title>
             <div class="news-item">
@@ -22,8 +22,8 @@
                 <div class="news-title">{{ item.title }}</div>
                 <div class="news-meta">
                   <span>{{ item.author }}</span>
-                  <span>{{ item.publishTime }}</span>
-                  <span>浏览时间: {{ item.viewTime }}</span>
+                  <span>{{ formatTime(item.publishTime) }}</span>
+                  <span>浏览时间: {{ formatTime(item.viewTime) }}</span>
                 </div>
               </div>
             </div>
@@ -34,7 +34,7 @@
           type="danger" 
           size="mini" 
           icon="cross"
-          @click="confirmDelete(item.id)"
+          @click="confirmDelete(item.historyId || item.id)"
         ></van-button>
       </div>
     </div>
@@ -51,6 +51,16 @@ import { showDialog } from 'vant';
 
 const router = useRouter();
 const historyStore = useHistoryStore();
+
+// 把后端返回的 ISO 时间字符串格式化为 'YYYY-MM-DD HH:mm'
+const formatTime = (value) => {
+  if (!value) return '';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return String(value); // 兼容本地存储里的旧格式
+  const pad = (n) => String(n).padStart(2, '0');
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} `
+    + `${pad(date.getHours())}:${pad(date.getMinutes())}`;
+};
 
 // 返回上一页
 const onClickLeft = () => {
@@ -82,17 +92,17 @@ const removeHistory = async (id) => {
   }
 };
 
-// 确认删除
-const confirmDelete = (id) => {
+// 确认删除（showDialog 点“取消”会 reject，必须 catch，否则控制台报 Uncaught (in promise) cancel）
+const confirmDelete = (recordId) => {
   showDialog({
     title: '提示',
     message: '确定要删除这条浏览记录吗？',
     showCancelButton: true,
   }).then((action) => {
     if (action === 'confirm') {
-      removeHistory(id);
+      removeHistory(recordId);
     }
-  });
+  }).catch(() => {});
 };
 
 // 清空历史记录
@@ -120,7 +130,7 @@ const onClickClear = async () => {
         // historyStore.clearHistory();
       }
     }
-  });
+  }).catch(() => {});
 };
 
 // 组件挂载时加载历史记录

@@ -12,7 +12,7 @@ ASYNC_DATABASE_URL = 'mysql+aiomysql://root:123456@localhost:3306/news_app?chars
 # 创建异步引擎
 async_engine = create_async_engine(
     ASYNC_DATABASE_URL,
-    echo=True,
+    echo=False,
     pool_size=10,
     max_overflow=20
 )

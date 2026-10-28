@@ -65,7 +65,7 @@ async def get_related_news(db: AsyncSession, news_id: int, category_id: int, lim
         'author': news.author,
         'publishTime': news.publish_time,
         'categoryId': news.category_id,
-        'views': news
+        'views': news.views
     } for news in related_news]
 
 

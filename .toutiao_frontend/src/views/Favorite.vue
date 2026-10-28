@@ -81,7 +81,7 @@ const confirmDelete = (id) => {
     if (action === 'confirm') {
       removeFavorite(id);
     }
-  });
+  }).catch(() => {});
 };
 
 // 清空收藏
@@ -99,7 +99,7 @@ const onClickClear = async () => {
         console.log('清空收藏列表');
       }
     }
-  });
+  }).catch(() => {});
 };
 
 // 组件挂载时加载收藏数据

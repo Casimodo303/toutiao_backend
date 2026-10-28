@@ -108,9 +108,9 @@ export const useHistoryStore = defineStore('history', {
       }
     },
     
-    // 删除单条浏览历史
-    removeHistory(id) {
-      this.history = this.history.filter(item => item.id !== id);
+    // 删除单条浏览历史（key 可以是 historyId，也可以是未登录本地数据里的 newsId）
+    removeHistory(key) {
+      this.history = this.history.filter(item => item.historyId !== key && item.id !== key);
       this.saveHistory();
     },
     

@@ -1,8 +1,11 @@
 #===============================================================
-# 名称：crud/users.py
+# 名称：crud/favorite.py
 # 作用：为收藏提供数据库增删改查的方法
-# 主要依赖：models/favorite, utils/seurity
+# 主要依赖：models/(favorite, news)
 #===============================================================
+# 标准库
+from datetime import datetime
+
 # 三方库
 from sqlalchemy import select, delete, func
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -29,6 +32,16 @@ async def add_news_favorite(
         user_id: int,
         news_id: int
 ):
+    stmt = select(Favorite).where(Favorite.user_id == user_id, Favorite.news_id == news_id)
+    existing = (await db.execute(stmt)).scalars().first()
+
+    if existing:
+        # 已收藏过：只刷新收藏时间
+        existing.created_at = datetime.now()
+        await db.commit()
+        await db.refresh(existing)
+        return existing
+
     favorite = Favorite(user_id=user_id, news_id=news_id)
     db.add(favorite)
     await db.commit()
@@ -44,7 +57,6 @@ async def remove_news_favorite(
     stmt = delete(Favorite).where(Favorite.user_id == user_id, Favorite.news_id ==news_id)
     result = await db.execute(stmt)
     await db.commit()
-    await db.refresh(stmt)
     return result.rowcount > 0
 
 # 查询收藏列表

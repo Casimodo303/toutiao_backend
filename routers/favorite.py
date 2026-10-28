@@ -4,7 +4,7 @@
 # 主要依赖：crud/users, config/db_conf, schemas/users, utils/(auth, response)
 #===============================================================
 # 三方库
-from fastapi import APIRouter, Query, Depends, Body, HTTPException
+from fastapi import APIRouter, Query, Depends, HTTPException
 from starlette import status
 
 # 本地库
@@ -44,9 +44,9 @@ async def remove_favorite(
         user = Depends(get_current_user),
         db = Depends(get_db)
 ):
-    result = favorite.remove_news_favorite(db, user.id, news_id)
+    result = await favorite.remove_news_favorite(db, user.id, news_id)
     if not result:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detial="收藏记录不存在")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="收藏记录不存在")
     return success_response(message="取消收藏成功")
 
 # 获取收藏列表路由
@@ -59,10 +59,10 @@ async def get_favorite_list(
 ):
     rows, total = await favorite.get_favorite_list(db, user.id, page, page_size)
     favorite_list = [{
-         **news.__dict__,
+         **{k: v for k, v in news.__dict__.items() if not k.startswith('_')},
         "favorite_time": favorite_time,
         "favorite_id": favorite_id
-    } for news, favorite_time, favorite_id, in rows]
+    } for news, favorite_time, favorite_id in rows]
     has_more = total > page * page_size
     data = FavoriteListRequest(list=favorite_list, total=total, hasMore=has_more)
     return success_response(message="获取收藏列表成功", data=data)

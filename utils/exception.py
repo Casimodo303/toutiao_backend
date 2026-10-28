@@ -37,7 +37,7 @@ async def integrity_error_handler(request: Request, exc: IntegrityError):
     # 判断具体的约束类型错误
     if 'username_UNIQUE' in error_msg or 'Duplicate entry' in error_msg:
         detail = '用户名已存在'
-    elif 'FOREION KEY' in error_msg:
+    elif 'FOREIGN KEY' in error_msg:
         detail = '关联用户不存在'
     else:
         detail = '数据约束冲突，请检查输入'
@@ -52,7 +52,7 @@ async def integrity_error_handler(request: Request, exc: IntegrityError):
         }
 
     return JSONResponse(
-        status_code=status.HTTP_400_BAD_RERUEST,
+        status_code=status.HTTP_400_BAD_REQUEST,
         content={
             'code': 400,
             'message': detail,

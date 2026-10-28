@@ -3,12 +3,16 @@
 # 作用：主模块，FastAPI实例化，对挂载路由注册，注册全局异常，实现跨域链接中间件(Vue)
 # 主要依赖：router/(news, usersw, favorite), utils/exception_handlers
 #===============================================================
+# 标准库
+from pathlib import Path
+
 # 三方库
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 
 # 本地库
-from routers import news, users, favorite
+from routers import news, users, favorite, history
 from utils.exception_handlers import register_exception_handlers
 
 # FastAPI实例化
@@ -36,6 +40,14 @@ app.add_middleware(
 async def root():
     return {'message': 'Hello World'}
 
+# 网站图标
+# 图标文件：static/favicon.ico（32x32）
+FAVICON_PATH = Path(__file__).resolve().parent / "static" / "favicon.ico"
+
+@app.get("/favicon.ico", include_in_schema=False)  # include_in_schema=False：不在 /docs 接口列表里显示
+async def favicon():
+    return FileResponse(FAVICON_PATH, media_type="image/x-icon")
+
 # 挂载路由/注册路由
 app.include_router(news.router)
 
@@ -44,4 +56,8 @@ app.include_router(users.router)
 
 # 挂载路由/注册路由
 app.include_router(favorite.router)
+
+# 挂载路由/注册路由
+app.include_router(history.router)
+
 

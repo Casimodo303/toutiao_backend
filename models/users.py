@@ -14,17 +14,6 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 # 创建基类
 class Base(DeclarativeBase):
-    # created_at: Mapped[datetime] = mapped_column(
-    #     DateTime,
-    #     default=datetime.now,
-    #     comment='创建时间'
-    # )
-    # updated_at: Mapped[datetime] = mapped_column(
-    #     DateTime,
-    #     default=datetime.now,
-    #     onupdate=datetime.now,
-    #     comment='更新时间'
-    # )
     pass
 
 # 用户类
