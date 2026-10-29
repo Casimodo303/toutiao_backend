@@ -14,7 +14,8 @@ async_engine = create_async_engine(
     ASYNC_DATABASE_URL,
     echo=False,
     pool_size=10,
-    max_overflow=20
+    max_overflow=20,
+    pool_pre_ping=True  # 取连接前先 ping，MySQL 重启后自动丢弃失效连接
 )
 
 # 创建异步会话工厂

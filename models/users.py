@@ -8,7 +8,7 @@ from datetime import datetime
 from typing import Optional
 
 # 三方库
-from sqlalchemy import ForeignKey, DateTime, Text, Index, Integer, String, Enum
+from sqlalchemy import ForeignKey, DateTime, Index, Integer, String, Enum
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
